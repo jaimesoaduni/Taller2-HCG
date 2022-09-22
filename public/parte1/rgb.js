@@ -1,7 +1,7 @@
 import * as THREE from 'three'
-import { OrbitControls } from './jsm/controls/OrbitControls.js'
-import Stats from './jsm/libs/stats.module.js'
-import { GUI } from './jsm/libs/lil-gui.module.min.js'
+import { OrbitControls } from 'orbitcontrols'
+import Stats from 'stats'
+import { GUI } from 'gui'
 
 let scene, camera, renderer, controls
 

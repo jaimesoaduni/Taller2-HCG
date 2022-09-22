@@ -1,9 +1,12 @@
 import * as THREE from 'three'
 import { OrbitControls } from './jsm/controls/OrbitControls.js'
-/*import Stats from './jsm/libs/stats.module.js'
-import { GUI } from './jsm/libs/lil-gui.module.min.js'*/
+import Stats from './jsm/libs/stats.module.js'
+import { GUI } from './jsm/libs/lil-gui.module.min.js'
 
-let scene, camera, renderer, controls, obama, earth
+let scene, camera, renderer, controls
+
+const stats = new Stats()
+document.body.appendChild(stats.dom)
 
 init()
 animate()
@@ -16,19 +19,26 @@ function init() {
 
     renderer = new THREE.WebGLRenderer()
     renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.shadowMap.enabled = true
     document.body.appendChild(renderer.domElement)
 
     controls = new OrbitControls(camera, renderer.domElement)
 
-    // Luz que alumbra toda la escena por igual.
-    const light = new THREE.AmbientLight(0xffffff, 1)
-    light.castShadow = true
-    light.decay = 2
-    scene.add(light)
+    const light1 = new THREE.PointLight(0xff0000, 5)
+    const light2 = new THREE.PointLight(0x00ff00, 5)
+    const light3 = new THREE.PointLight(0x0000ff, 5)
 
-    const pLight = new THREE.PointLight(0x4287f5, 5)
-    pLight.position.set(50, 10, 50)
-    scene.add(pLight)
+    light1.position.set(10, 15, 10)
+    light2.position.set(10, 15, -10)
+    light3.position.set(-10, 15, 0)
+
+    light1.castShadow = true
+    light2.castShadow = true
+    light3.castShadow = true
+
+    scene.add(light1)
+    scene.add(light2)
+    scene.add(light3)
 
     const planeGeo = new THREE.PlaneGeometry(100, 100)
     const planeMat = new THREE.MeshPhongMaterial({
@@ -37,43 +47,45 @@ function init() {
     })
     const plane = new THREE.Mesh(planeGeo, planeMat)
     plane.rotation.x = Math.PI * -.5
+    plane.receiveShadow = true
     scene.add(plane)
 
-    const earthGeo = new THREE.SphereGeometry(10, 30, 30)
-    const earthTex = new THREE.TextureLoader().load("img/Earth.jpg")
-        /*earthTex.wrapS = THREE.RepeatWrapping
-        earthTex.wrapT = THREE.RepeatWrapping
-        earthTex.repeat.set(4, 5)*/
-    const earthMat = new THREE.MeshLambertMaterial({
-        map: earthTex,
-        //color: 0x202020
+    const cubeGeo = new THREE.BoxGeometry(10, 10, 10)
+    const cubeMat = new THREE.MeshLambertMaterial({
+        color: 0x202020
     })
-    earth = new THREE.Mesh(earthGeo, earthMat)
-    earth.position.y = 12
-    earth.castShadow = true
-    earth.receiveShadow = true
-    scene.add(earth)
+    const cube = new THREE.Mesh(cubeGeo, cubeMat)
+    cube.position.y = 5
+    cube.receiveShadow = true
+    cube.castShadow = true
+    scene.add(cube)
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5))
 
-    const obamaGeo = new THREE.ConeGeometry(10, 10, 4)
-    const obamaTex = new THREE.TextureLoader().load("img/obamiumT1.png")
-    obamaTex.wrapS = THREE.RepeatWrapping
-    obamaTex.wrapT = THREE.RepeatWrapping
-    obamaTex.repeat.x = 4
-    const obamaMat = new THREE.MeshStandardMaterial({
-        map: obamaTex,
-        side: THREE.DoubleSide
-    })
-    obama = new THREE.Mesh(obamaGeo, obamaMat)
-    obama.position.y = 30
-    obama.castShadow = true
-    obama.receiveShadow = true
-    scene.add(obama)
+    const gui = new GUI()
+    const light1Folder = gui.addFolder('light1 (red)')
+    const light2Folder = gui.addFolder('light2 (green)')
+    const light3Folder = gui.addFolder('light3 (blue)')
+
+    light1Folder.add(light1.position, 'x', -50, 50)
+    light1Folder.add(light1.position, 'y', 1, 50)
+    light1Folder.add(light1.position, 'z', -50, 50)
+
+    light2Folder.add(light2.position, 'x', -50, 50)
+    light2Folder.add(light2.position, 'y', 1, 50)
+    light2Folder.add(light2.position, 'z', -50, 50)
+
+    light3Folder.add(light3.position, 'x', -50, 50)
+    light3Folder.add(light3.position, 'y', 1, 50)
+    light3Folder.add(light3.position, 'z', -50, 50)
+
+    light1Folder.open()
+    light2Folder.open()
+    light3Folder.open()
 }
 
 function animate() {
     requestAnimationFrame(animate)
-    obama.rotation.y -= 0.025
-    earth.rotation.y += 0.01
     renderer.render(scene, camera)
     controls.update()
+    stats.update()
 }

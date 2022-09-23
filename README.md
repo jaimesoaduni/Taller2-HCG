@@ -8,7 +8,7 @@ necesarios para mostrar tanto la parte 1 como la parte 2, esto solo
 en el _main branch_. 
 
 Con el comando `npm start` se levanta el servidor para acceder a
-la página web, pero con los comandos `git checkout parte1` y
+la página web, y con los comandos `git checkout parte1` y
 `git checkout parte2` se puede  iterar sobre ambas partes del taller.
 Nótese que es necesario refescar la página para que los cambios tomen
 efecto luego de cada git checkout.

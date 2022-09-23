@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from './jsm/controls/OrbitControls.js'
-/*import Stats from './jsm/libs/stats.module.js'
-import { GUI } from './jsm/libs/lil-gui.module.min.js'*/
+import {Mesh} from "three";
 
 let scene, camera, renderer, controls, obama, earth
 
@@ -41,12 +40,8 @@ function init() {
 
     const earthGeo = new THREE.SphereGeometry(10, 30, 30)
     const earthTex = new THREE.TextureLoader().load("img/Earth.jpg")
-        /*earthTex.wrapS = THREE.RepeatWrapping
-        earthTex.wrapT = THREE.RepeatWrapping
-        earthTex.repeat.set(4, 5)*/
     const earthMat = new THREE.MeshLambertMaterial({
         map: earthTex,
-        //color: 0x202020
     })
     earth = new THREE.Mesh(earthGeo, earthMat)
     earth.position.y = 12
@@ -68,6 +63,18 @@ function init() {
     obama.castShadow = true
     obama.receiveShadow = true
     scene.add(obama)
+
+    const amogusGeo = new THREE.PlaneGeometry(10, 10)
+    const amogusTex = new THREE.TextureLoader().load("img/amogus.webp")
+    const amogusMat = new THREE.MeshLambertMaterial({
+        map: amogusTex,
+        side: THREE.DoubleSide,
+        transparent: true
+    })
+    const amogus = new Mesh(amogusGeo, amogusMat)
+    amogus.position.y = -.1
+    amogus.rotation.x = Math.PI / 2
+    scene.add(amogus)
 }
 
 function animate() {

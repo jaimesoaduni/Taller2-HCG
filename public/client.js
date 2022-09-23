@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 import { OrbitControls } from './jsm/controls/OrbitControls.js'
-import {Mesh} from "three";
 
 let scene, camera, renderer, controls, obama, earth
 

@@ -70,7 +70,7 @@ function init() {
         side: THREE.DoubleSide,
         transparent: true
     })
-    const amogus = new Mesh(amogusGeo, amogusMat)
+    const amogus = new THREE.Mesh(amogusGeo, amogusMat)
     amogus.position.y = -.1
     amogus.rotation.x = Math.PI / 2
     scene.add(amogus)
